@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app:
+    container_name: nodejs
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "51005:51005"
+    links:
+      - mongo
+  mongo:
+    container_name: backend_demo
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
+  nginx:
+    build:
+      context: ./nginxdockerfile
+      dockerfile: Dockerfile
+    container_name: nginx
+    hostname: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - app
